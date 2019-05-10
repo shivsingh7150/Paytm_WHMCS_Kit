@@ -42,7 +42,11 @@ if(isset($response['ORDERID']) && isset($response['STATUS']) && isset($response[
 		if($responseParamList['STATUS']=='TXN_SUCCESS' && $responseParamList['TXNAMOUNT']==$response['TXNAMOUNT'])
 		{
 			$gatewayresult = "success";
-			addInvoicePayment($txnid, $paytm_trans_id, $amount,"0.0", $gatewaymodule); 
+			
+			///// Get Real Invoice Id for WHMCS /////
+           		$UniqueOrderID = explode("-", $response['ORDERID']);
+            		$invoice_id = $UniqueOrderID[0];
+			addInvoicePayment($invoice_id, $paytm_trans_id, $amount,"0.0", $gatewaymodule);
 			logTransaction($GATEWAY["name"], $response, $response['RESPMSG']);
 		}
 		else{
